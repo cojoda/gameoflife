@@ -23,6 +23,7 @@ void fillBoard(int** board, int rows, int cols)
     }
 }
 
+// evolves board 1 step
 void updateBoard(int** board, int rows, int cols)
 {
     // make copy of board
@@ -80,7 +81,7 @@ void updateBoard(int** board, int rows, int cols)
             neighbors += oldBoard[rowNext][col];
             neighbors += oldBoard[rowNext][colNext];
 
-            // update cell using neighbor count
+            // update current cell
             if (oldBoard[row][col] == 0)
             {
                 if (neighbors == 3)
@@ -127,28 +128,28 @@ void printBoard(int** board, int rows, int cols)
 
 void clearScreen()
 {
-    printf("\033[2J");
-    printf("\033[%d;%dH", 0, 0);
+    system("clear");
 }
 
 void game(int rows, int cols)
 {
-    // declare/init board
+    // declare, initialize, & fill board
     int** board;
     board = malloc(sizeof(*board) * rows);
     for (int row = 0; row < rows; row++)
     {
         board[row] = malloc(sizeof(*board[row]) * cols);
     }
-
-    clearScreen();
     fillBoard(board, rows, cols);
+
+    // main loop
+    clearScreen();
     while (1)
     {
-        printBoard(board, rows, cols);
-        usleep(200000);
-        updateBoard(board, rows, cols);
         clearScreen();
+        printBoard(board, rows, cols);
+        updateBoard(board, rows, cols);
+        usleep(100000);
     }
 
     // free board
@@ -161,5 +162,7 @@ void game(int rows, int cols)
 
 int main(void)
 {
-    game(30, 30);
+    int rows = 50;
+    int cols = 50;
+    game(rows, cols);
 }
